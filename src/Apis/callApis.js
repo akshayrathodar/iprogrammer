@@ -1,16 +1,14 @@
 import axios from 'axios';
 import { API_URL } from '../Constants/const';
 
-export function getProduct(){
+export function getBlog(page,limit){
     const prom =  new Promise((res,rej)=>{
         try{
-            axios.get(API_URL)
+            axios.get(API_URL+'?_page='+page+'&_limit='+limit)
             .then((response)=>{
-                let FirstTen = [];
                 if(response.data) {
-                    FirstTen = response.data.slice(0,10);
+                    res(response.data);
                 }
-                res(FirstTen);
             }).catch((response)=>{
                 rej(response);
             });
@@ -20,5 +18,23 @@ export function getProduct(){
         }
     })
     return prom;
+}
+
+export function deleteBlog(id) {
+    const prom =  new Promise((res,rej)=>{
+        try{
+            axios.delete(API_URL+'/'+id)
+            .then((response)=>{
+                console.log('console for delete' ,response);
+                res(response);
+            }).catch((response)=>{
+                rej(response);
+            });
+        }
+        catch(err){
+            rej(err);
+        }
+    })
+    return prom;    
 }
 
